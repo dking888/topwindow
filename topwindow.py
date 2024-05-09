@@ -1,4 +1,6 @@
 import tkinter as tk
+import pystray
+from PIL import Image
 
 
 def create_safe_resizable_window():
@@ -69,9 +71,37 @@ def create_safe_resizable_window():
         change_to_white.config(bg=color, fg=text_color)
         close_button.config(bg=color, fg=text_color)
 
+    # 创建托盘图标并最小化窗口的功能
+    def minimize_to_tray():
+        root.withdraw()  # 隐藏窗口
+
+        # 创建托盘图标
+        image = Image.open("icon.png")  # 使用你的图标文件替换"icon.png"
+        menu = (
+            pystray.MenuItem("恢复", lambda: restore_from_tray(icon)),
+            pystray.MenuItem("关闭", lambda: exit_program(icon)),
+        )
+        icon = pystray.Icon("name", image, "My System Tray Icon", menu)
+
+        # 恢复窗口的功能
+        def restore_from_tray(icon):
+            icon.stop()
+            root.deiconify()
+
+        # 关闭程序的功能
+        def exit_program(icon):
+            icon.stop()
+            root.destroy()
+
+        icon.run()
+
     # 在窗口的顶部创建一个框架来放置按钮
     top_frame = tk.Frame(root, bg="white")
     top_frame.pack(side="top", fill="x")
+
+    # 创建最小化按钮
+    minimize_button = tk.Button(top_frame, text="—", command=minimize_to_tray, width=2)
+    minimize_button.pack(side="right")
 
     # 在底部创建一个框架来放置调整大小的标签
     bottom_frame = tk.Frame(root, bg="white")
