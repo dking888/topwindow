@@ -70,6 +70,9 @@ def create_safe_resizable_window():
         change_to_black.config(bg=color, fg=text_color)
         change_to_white.config(bg=color, fg=text_color)
         close_button.config(bg=color, fg=text_color)
+        minimize_button.config(
+            bg=color, fg=text_color
+        )  # 设置 minimize_button 的背景颜色和前景颜色
 
     # 创建托盘图标并最小化窗口的功能
     def minimize_to_tray():
